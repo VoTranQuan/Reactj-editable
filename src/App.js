@@ -13,7 +13,7 @@ class App extends Component {
             },
             {
                 'name': 'Mac',
-                'job': 'Bouncer',                
+                'job': 'Bouncer',
                 'status': 1
             },
             {
@@ -38,16 +38,29 @@ class App extends Component {
         })
     }
 
-    editCharacter = (index, value) => {
+    updateStatus = (index, value) => {
         var charac = this.state.characters;
         console.log(index);
 
-        var updateCmd = update(charac[index], {status: {$set: value}});
-        var newCharacters = update(charac, { $splice: [[index,1, updateCmd]] });
+        var updateCmd = update(charac[index], { status: { $set: value } });
+        var newCharacters = update(charac, { $splice: [[index, 1, updateCmd]] });
 
-       this.setState({
-           characters: newCharacters
-       })        
+        this.setState({
+            characters: newCharacters
+        })
+    }
+
+    updateCharacter = (index, _name, _job) => {
+        console.log("==================");
+        console.log(_name + " | " + _job);
+        var charac = this.state.characters;
+        var updateCmd = update(charac[index], { $set: { name: _name, job: _job, status: 1 } });
+        console.log(updateCmd);
+        var newCharacters = update(charac, { $splice: [[index, 1, updateCmd]] });
+
+        this.setState({
+            characters: newCharacters
+        })
     }
 
     handleSubmit = character => {
@@ -64,9 +77,10 @@ class App extends Component {
                 <h1>Hello Qz</h1>
                 <Table characterData={characters}
                     removeCharacter={this.removeCharacter}
-                    editCharacter = {this.editCharacter}
+                    updateStatus={this.updateStatus}
+                    updateCharacter={this.updateCharacter}
                 />
-                <Form handleSubmit={this.handleSubmit}/>
+                <Form handleSubmit={this.handleSubmit} />
             </div>
         );
     }

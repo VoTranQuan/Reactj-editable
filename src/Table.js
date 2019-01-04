@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import FormInLine from "./FormInLine";
+import TableLine from "./TableLine";
 
 const TableHeader = () => {
   return (
@@ -17,20 +17,13 @@ const TableHeader = () => {
 const TableBody = x => {
   const row = x.characterDataa.map((row, index) => {
     return (
-      <tr key={index}>
-        <td>{row.status > 0 ? (<label>{row.name}</label>) : (<input type="text" className="form-control" value={row.name} onChange={x.handleChange}/>)}</td>
-        <td>{row.status > 0 ? (<label>{row.job}</label>) : (<input type="text" className="form-control" value={row.job} onChange={x.handleChange}/>)}</td>
-        <td>{row.status > 0 ? (
-            <div>
-                <button className="btn btn-danger" onClick={() => x.removeCharacter(index)}>Delete</button> &nbsp;
-                <button className="btn btn-info" onClick={() => x.editCharacter(index, -1)}>Edit</button>
-            </div>) : (
-            <div>
-                <button className="btn btn-secondary" onClick={() => x.editCharacter(index, 1)}>Cancel</button> &nbsp;
-                <button className="btn btn-success" onClick={() => x.updateCharacter(index)}>Save</button>
-            </div>)}
-        </td>
-      </tr>
+      <TableLine 
+        singleRow={row} 
+        updateCharacter={x.updateCharacter}
+        key = {index}
+        index = {index}
+        removeCharacter ={x.removeCharacter} 
+        updateStatus = {x.updateStatus}/>
     );
   });
 
@@ -57,8 +50,9 @@ class Table extends Component {
     const {
       characterData,
       removeCharacter,
-      editCharacter,
-      saveCharacter
+      updateStatus,
+      saveCharacter,
+      updateCharacter
     } = this.props;
 
     return (
@@ -67,9 +61,10 @@ class Table extends Component {
         <TableBody
           characterDataa={characterData}
           removeCharacter={removeCharacter}
-          editCharacter={editCharacter}
+          updateStatus={updateStatus}
           saveCharacter={saveCharacter}
           handleChange = {this.handleChange}
+          updateCharacter = {updateCharacter}
         />
       </table>
     );
